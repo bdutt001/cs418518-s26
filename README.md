@@ -1,2 +1,3 @@
-# cs418518-s26
-CS418518 Class Repository
+# ODU CS 418/518 - Web Programming, Spring 2026
+* [Syllabus](syllabus.pdf)
+* [Course Materials on Canvas](https://canvas.odu.edu/courses/201295)
