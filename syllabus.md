@@ -130,7 +130,7 @@ Since this is an online class, it is essential that you regularly stay involved 
 
 Make-ups for graded activities are possible only with a valid written medical or university excuse. It is the student's responsibility to give the instructor the written excuse and to arrange for any makeup work to be done.
 
-### Disability Services
+### Education Accessibility and Accomodations
 
 In compliance with PL94-142 and more recent federal legislation affirming the rights of disabled individuals, provisions will be made for students with special needs on an individual basis. The student must have been identified as special needs by the university and an appropriate letter must be provided to the course instructor. Provision will be made based upon written guidelines from the University's [Office of Educational Accessibility](https://www.odu.edu/accessibility). All students are expected to fulfill all course requirements.
 
@@ -177,9 +177,17 @@ More information on academic integrity is available on the ODU [academic integri
 
 ## Statement from ODU Counseling Services
 
-ODU’s [Office of Counseling Services](https://odu.edu/counselingservices) (OCS, 1526 Webb University Center) is a university agency with competent, diverse, and multidisciplinary professional staff. We are committed to supporting the emotional well-being, social development, and academic progress of all students at Old Dominion University. 
- 
-College life can be a wonderful time of self-discovery, but for many, it is also a time when the awareness of mental health conditions increases. OCS services are available to assist with addressing mental health concerns that a student may be experiencing. You can learn more about the broad range of confidential mental health services available on campus via our website at http://www.odu.edu/counselingservices. All services are free to ODU students.
+Old Dominion University is committed to advancing the mental health and wellbeing of its students and recognizes that, at times, personal stressors can interfere with academic performance and daily life. The Office of Counseling Services supports students’ mental and emotional wellbeing by providing confidential virtual and in person individual, group counseling, crisis intervention, and referral services at no cost. Schedule a same day/next day appointment at Make a counseling Appointment.  
+The [Office of Counseling Services](https://www.odu.edu/counseling-services) is located in the Student Recreation and Well-being Center  
+  
+If there is ever an immediate concern for your safety or the safety of another individual, please call 911 In case of a mental health emergency (e.g., thoughts or plans to kill yourself, thoughts of seriously harming others, recent sexual assault). Crisis services are   available 24/7 by calling 757- 683-4401 and press Option 2 to speak to a crisis counselor. You may also call the Suicide & Crisis Lifeline (988), and/or utilize the Crisis Text Line (text “HOME” to 741741).  
+
+
+---
+
+## Withdrawal
+
+Enrollment in this course indicates your acceptance of its teaching focus, requirements, and policies. Please review the syllabus and the course requirements as soon as possible. If you feel that the nature of this course does not meet your interests, needs or expectations, if you are not prepared for the amount of work involved – or if you anticipate that the class meetings, assignment deadlines or adherence to course policies will be an unacceptable hardship for you – you should drop the course by the drop/add deadline, which is listed in the [ODU Schedule of Classes](https://www.odu.edu/academics/calendar). See  [the University Registrar](https://www.odu.edu/registrar) for more information.  
 
 ---
 
