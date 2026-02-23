@@ -1,0 +1,24 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "backend",
+  "keywords": [
+    "Advising",
+    "Portal"
+  ],
+  "homepage": "https://github.com/bdutt001/cs418518-s26#readme",
+  "bugs": {
+    "url": "https://github.com/bdutt001/cs418518-s26/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bdutt001/cs418518-s26.git"
+  },
+  "license": "ISC",
+  "author": "Ben Dutton",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test"
+  }
+}
