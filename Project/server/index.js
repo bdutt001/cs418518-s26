@@ -12,6 +12,7 @@ const myLogger = function(req,res,next){
     next()
 }
 
+app.use(express.json());
 app.use(myLogger);
 app.use('/user', users);
 
