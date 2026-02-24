@@ -3,6 +3,12 @@ import { connection } from "../database/connection.js";
 
 const user = Router();
 
+/*
+USER APIs sourced from course repository.
+
+Nasreen Arif, https://github.com/nasreenarif/cs418518-s26/blob/60fa03240d225b28dc44ec02206acb077ce4354c/Project/server/route/user.js
+*/
+
 
 // =======================
 // GET ALL USERS
@@ -188,6 +194,71 @@ user.delete("/:id", async (req, res) => {
             status: 500,
             message: err.message,
             data: null
+        });
+    }
+});
+
+
+//========================
+//Login API
+//========================
+user.post("/login", async (req, res) => {
+    try {
+        // Debug (optional)
+        // console.log("headers content-type:", req.headers["content-type"]);
+        // console.log("body:", req.body);
+
+
+        const { u_email, u_password } = req.body || {};
+
+        // 1) Validate input
+        if (!u_email || !u_password) {
+            return res.status(400).json({
+                status: 400,
+                message: "Email and password are required",
+                data: null,
+            });
+        }
+
+        // 2) Query user by email
+        const [rows] = await connection.execute(
+            "SELECT * FROM user_info WHERE u_email = ? and u_password=? LIMIT 1",
+            [u_email, u_password]
+        );
+
+        if (rows.length === 0) {
+            return res.status(401).json({
+                status: 401,
+                message: "Invalid email or password",
+                data: null,
+            });
+        }
+
+        const userRecord = rows[0];
+
+        // 3) Password check (PLAIN TEXT version - for class demo only)
+        if (userRecord.u_password !== u_password) {
+            return res.status(401).json({
+                status: 401,
+                message: "Invalid email or password",
+                data: null,
+            });
+        }
+
+        // 4) Remove password before sending back
+        const { u_password: _, ...safeUser } = userRecord;
+        // const { u_password:_, u_is_admin,u_is_verified, ...safeUser } = userRecord;
+
+        return res.status(200).json({
+            status: 200,
+            message: "Login successful",
+            data: safeUser,
+        });
+    } catch (err) {
+        return res.status(500).json({
+            status: 500,
+            message: err.message,
+            data: null,
         });
     }
 });
