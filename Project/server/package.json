@@ -16,9 +16,12 @@
   },
   "license": "ISC",
   "author": "Ben Dutton",
-  "type": "commonjs",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "npm run test"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
   }
 }
