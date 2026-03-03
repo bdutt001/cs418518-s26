@@ -1,0 +1,10 @@
+.signup-group{
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    margin-bottom: 12px;
+    gap: 10px 10px;
+}
+
+.signup-label{
+    text-align: right;
+}

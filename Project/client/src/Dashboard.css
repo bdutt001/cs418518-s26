@@ -1,0 +1,35 @@
+.dashboard {
+  text-align: center;
+}
+
+.user-info {
+  margin-top: 20px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin: 10px 0;
+}
+
+.label {
+  font-weight: bold;
+  min-width: 70px;
+  text-align: right;
+}
+
+.value {
+  min-width: 220px;
+  text-align: left;
+}
+
+.edit-btn {
+  padding: 4px 10px;
+  font-size: 0.9rem;
+}
+
+.logout-btn {
+  margin-top: 24px;
+}

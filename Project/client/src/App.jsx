@@ -1,9 +1,13 @@
-import { Route, BrowserRouter as Router, Routes, Link, useNavigate } from "react-router-dom";
+import { Route, BrowserRouter as Router, Routes, Link, Navigate, useNavigate } from "react-router-dom";
 import './App.css';
 import Dashboard from "./Dashboard.jsx";
 import Header from "./Header.jsx";
 import Login from "./Login.jsx";
 import Signup from "./Signup.jsx";
+import ForgotPassword from "./ForgotPassword.jsx";
+import ResetPassword from "./ResetPassword.jsx";
+import CompleteLogin from "./CompleteLogin.jsx";
+
 
 function AppRoutes() {
 
@@ -58,11 +62,15 @@ function AppRoutes() {
   }
 
   return (
-     <Routes>
-            <Route path = "/login" element = {<Login/>} />
-            <Route path = "/signup" element = {<Signup onRegister={handleRegister}/>} />
-            <Route path = "/dashboard" element = {<Dashboard/>} />
-      </Routes>
+    <Routes>
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path="/" element={<Navigate to="/login" replace />} />
+      <Route path = "/login" element = {<Login/>} />
+      <Route path="/complete-login" element={<CompleteLogin />} />
+      <Route path = "/signup" element = {<Signup onRegister={handleRegister}/>} />
+      <Route path = "/dashboard" element = {<Dashboard/>} />
+    </Routes>
   );
 }
 

@@ -16,6 +16,8 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
+  const [infoMessage, setInfoMessage] = useState("");
+
   const navigate = useNavigate();
 
   function handleInputChange(identifier, value) {
@@ -28,7 +30,6 @@ export default function Login() {
     setSubmitted(true);
     setError("");
 
-    // Basic client-side validation
     if (!enteredEmail.includes("@")) {
       setError("Please enter a valid email.");
       return;
@@ -44,7 +45,6 @@ export default function Login() {
       const res = await fetch(import.meta.env.VITE_API_KEY + "/user/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        // send the keys your backend expects
         body: JSON.stringify({
           u_email: enteredEmail,
           u_password: enteredPassword,
@@ -58,20 +58,14 @@ export default function Login() {
         return;
       }
 
-      // your backend response is: { status, message, result: user }
-      const user = json.data ?? null;
-
-      if (!user) {
-        setError("Login succeeded but user data was missing.");
+      if (res.ok) {
+        setInfoMessage("A login link has been sent to your email. Check your inbox to complete login.");
         return;
       }
 
-      localStorage.setItem("loggedInUser", JSON.stringify(user));
+      setError("");
+      setSubmitted(true);
 
-// Used after API success
-// Used inside event handlers
-// Used conditionally
-      navigate("/dashboard");
     } catch (err) {
       setError(err?.message || "Something went wrong");
     } finally {
@@ -98,11 +92,11 @@ export default function Login() {
           {error}
         </div>
       )}
-
+      <h3 className="login-title">Login</h3>
       <form onSubmit={handleLogin}>
         <div className="controls">
           <p>
-            <label className={emailNotValid ? "invalid" : ""}>Email</label>
+            <label className={emailNotValid ? "invalid" : ""}>Email: </label>
             <input
               type="email"
               value={enteredEmail}
@@ -112,7 +106,7 @@ export default function Login() {
           </p>
 
           <p>
-            <label className={passwordNotValid ? "invalid" : ""}>Password</label>
+            <label className={passwordNotValid ? "invalid" : ""}>Password: </label>
             <input
               type="password"
               value={enteredPassword}
@@ -122,18 +116,38 @@ export default function Login() {
           </p>
         </div>
 
+        <p style={{ marginTop: 10 }}>
+          <a href="/forgot-password">Forgot Password?</a>
+        </p>
+        
         <div className="actions">
-          {/* Better UX: link to signup route */}
-          {/* Used for navigation triggered by user clicking UI
-              Cleaner than using <a href>
-              Does NOT reload the page */}
-          <Link to="/signup" className="button" style={{ textAlign: "center" }}>
+          <Link to="/signup" className="button" 
+          style={{ 
+            textAlign: "center",
+            padding: 10,
+            }}>
             Create a new account
           </Link>
 
           <button className="button" type="submit" disabled={loading}>
-            {loading ? "Signing in..." : "Sign In"}
+            {loading ? "Signing in..." : "Log In"}
           </button>
+
+          {infoMessage && (
+              <div
+                style={{
+                  marginTop: 12,
+                  padding: 10,
+                  borderRadius: 6,
+                  background: "#eef",
+                  border: "1px solid #99c",
+                  color: "#004",
+                  textAlign: "center",
+                }}
+              >
+                {infoMessage}
+              </div>
+          )}
         </div>
       </form>
     </div>
