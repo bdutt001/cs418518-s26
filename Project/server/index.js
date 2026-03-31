@@ -1,6 +1,7 @@
 import express from "express";
 import 'dotenv/config';
 import users from "./route/user.js"
+import advisingRoutes from "./route/advising.js";
 import cors from "cors";
 
 const app = express();
@@ -26,5 +27,6 @@ app.use(
 app.use(express.json());
 app.use(myLogger);
 app.use('/user', users);
+app.use("/api/advising", advisingRoutes);
 
 export default app;

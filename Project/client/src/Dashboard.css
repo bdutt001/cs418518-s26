@@ -2,6 +2,17 @@
   text-align: center;
 }
 
+.student-view {
+  display: flex;
+  flex-direction: row;
+
+  gap: 2rem;
+}
+
+.info-section {
+  justify-content: left;
+}
+
 .user-info {
   margin-top: 20px;
 }
@@ -32,4 +43,10 @@
 
 .logout-btn {
   margin-top: 24px;
+}
+
+.course-advising {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }

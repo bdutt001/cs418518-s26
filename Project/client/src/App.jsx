@@ -7,6 +7,8 @@ import Signup from "./Signup.jsx";
 import ForgotPassword from "./ForgotPassword.jsx";
 import ResetPassword from "./ResetPassword.jsx";
 import CompleteLogin from "./CompleteLogin.jsx";
+import AdvisingForm from "./AdvisingForm.jsx";
+import AdvisingHistory from "./AdvisingHistory.jsx";
 
 
 function AppRoutes() {
@@ -70,6 +72,9 @@ function AppRoutes() {
       <Route path="/complete-login" element={<CompleteLogin />} />
       <Route path = "/signup" element = {<Signup onRegister={handleRegister}/>} />
       <Route path = "/dashboard" element = {<Dashboard/>} />
+      <Route path="/advising" element={<AdvisingForm />} />
+      <Route path="/advising/:id" element={<AdvisingForm />} />
+      <Route path="/advising-history" element={<AdvisingHistory />} />
     </Routes>
   );
 }

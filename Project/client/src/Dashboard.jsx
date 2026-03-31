@@ -108,10 +108,10 @@ export default function Dashboard() {
         return;
       }
 
-      // ✅ Success
+      // Success
       setPasswordMessage("Password updated successfully. Please log in again.");
 
-      // Optional but recommended: force logout
+      // Force logout
       localStorage.removeItem("loggedInUser");
       setTimeout(() => navigate("/login"), 1500);
 
@@ -136,86 +136,104 @@ export default function Dashboard() {
           <h3>Admin Dashboard</h3>
         </div>
       ) : (
-        <div>
-          <h3>Student Dashboard</h3>
-          <div className="user-info">
-        <h3>User Info</h3>
+          <div>
+            <h3>Student Dashboard</h3>
+            <div className="student-view">
+            <section className="info-section">  
+              <div className="user-info">
+            
+              <h3>User Info</h3>
 
-        <div className="info-row">
-          <strong>Name:</strong>
-          {!isEditing ? (
-            <>
-              <span>{user.u_first_name} {user.u_last_name}</span>
-              <button onClick={() => setIsEditing(true)}>Edit</button>
-            </>
-          ) : (
-            <>
-              <input
-                value={form.firstName}
-                onChange={(e) => updateField("firstName", e.target.value)}
-                placeholder="First name"
-              />
-              <input
-                value={form.lastName}
-                onChange={(e) => updateField("lastName", e.target.value)}
-                placeholder="Last name"
-              />
-              <button onClick={handleSave}>Save</button>
-              <button onClick={() => setIsEditing(false)}>Cancel</button>
-            </>
-          )}
-        </div>
+              <div className="info-row">
+                <strong>Name:</strong>
+                {!isEditing ? (
+                  <>
+                    <span>{user.u_first_name} {user.u_last_name}</span>
+                    <button onClick={() => setIsEditing(true)}>Edit</button>
+                  </>
+                ) : (
+                  <>
+                    <input
+                      value={form.firstName}
+                      onChange={(e) => updateField("firstName", e.target.value)}
+                      placeholder="First name"
+                    />
+                    <input
+                      value={form.lastName}
+                      onChange={(e) => updateField("lastName", e.target.value)}
+                      placeholder="Last name"
+                    />
+                    <button onClick={handleSave}>Save</button>
+                    <button onClick={() => setIsEditing(false)}>Cancel</button>
+                  </>
+                )}
+              </div>
+            
+              <div className="info-row">
+                <strong>Email:</strong>
+                <span>{user.u_email}</span>
+              </div>
+            </div>
 
-        <div className="info-row">
-          <strong>Email:</strong>
-          <span>{user.u_email}</span>
-        </div>
+            <div className="info-row">
+
+            {!showChangePassword ? (
+              <button onClick={() => setShowChangePassword(true)}>
+                Change Password
+              </button>
+            ) : (
+              <div className="password-form">
+                <input
+                  type="password"
+                  placeholder="Current password"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                />
+
+                <input
+                  type="password"
+                  placeholder="New password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                />
+
+                <input
+                  type="password"
+                  placeholder="Confirm new password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+
+                <button onClick={handleChangePassword}>Save</button>
+                <button
+                  onClick={() => {
+                    setShowChangePassword(false);
+                    setCurrentPassword("");
+                    setNewPassword("");
+                    setConfirmPassword("");
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            )}
+          </div>
+        </section>
+    
+        <section className="advising section">
+          <h3>
+            Course Advising
+          </h3>
+          <div className="course-advising">
+            <button onClick={() => navigate("/advising-history")}>
+              View History
+            </button>
+            <button onClick={() => navigate("/advising")}>
+              Manage Advising
+            </button>
+          </div>
+        </section>
       </div>
-
-      <div className="info-row">
-
-      {!showChangePassword ? (
-        <button onClick={() => setShowChangePassword(true)}>
-          Change Password
-        </button>
-      ) : (
-        <div className="password-form">
-          <input
-            type="password"
-            placeholder="Current password"
-            value={currentPassword}
-            onChange={(e) => setCurrentPassword(e.target.value)}
-          />
-
-          <input
-            type="password"
-            placeholder="New password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-          />
-
-          <input
-            type="password"
-            placeholder="Confirm new password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-
-          <button onClick={handleChangePassword}>Save</button>
-          <button
-            onClick={() => {
-              setShowChangePassword(false);
-              setCurrentPassword("");
-              setNewPassword("");
-              setConfirmPassword("");
-            }}
-          >
-            Cancel
-          </button>
-        </div>
-      )}
-    </div>
-
       <button onClick={handleLogout}>Logout</button>
     </div>
   )}
