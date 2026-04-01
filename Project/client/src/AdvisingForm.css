@@ -1,0 +1,27 @@
+input,
+select {
+    margin-right: 2rem;
+    height: fit-content;
+    margin-bottom: 1rem;
+}
+
+button {
+    margin-top: 2rem;
+    margin-right: 2rem;
+}
+
+.heading-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 2rem;
+    align-items: baseline;
+}
+
+.plan {
+    display: flex;
+    margin-top: -2rem;
+
+    align-items: baseline;
+    justify-content: center;
+}

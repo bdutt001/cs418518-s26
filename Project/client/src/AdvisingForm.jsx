@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import "./AdvisingForm.css";
 
 const API = "http://localhost:3000/api/advising";
 const COURSE_API = "http://localhost:3000/courses/taken";
@@ -145,36 +146,42 @@ export default function AdvisingForm() {
     <div>
       <h2>Course Advising Form</h2>
 
-      <section>
-        <h3>History</h3>
+      <section className="term-info">
+        <h3>Term</h3>
+        <div className="inputs">
+          <input
+            placeholder="Last Term Attended"
+            value={form.lastTerm}
+            disabled={!isEditable}
+            onChange={(e) => updateForm("lastTerm", e.target.value)}
+          />
 
-        <input
-          placeholder="Last Term"
-          value={form.lastTerm}
-          disabled={!isEditable}
-          onChange={(e) => updateForm("lastTerm", e.target.value)}
-        />
+          <input
+            placeholder="Last GPA"
+            value={form.lastGpa}
+            disabled={!isEditable}
+            onChange={(e) => updateForm("lastGpa", e.target.value)}
+          />
 
-        <input
-          placeholder="Last GPA"
-          value={form.lastGpa}
-          disabled={!isEditable}
-          onChange={(e) => updateForm("lastGpa", e.target.value)}
-        />
-
-        <input
-          placeholder="Current Term"
-          value={form.currentTerm}
-          disabled={!isEditable}
-          onChange={(e) => updateForm("currentTerm", e.target.value)}
-        />
+          <input
+            placeholder="Current Term"
+            value={form.currentTerm}
+            disabled={!isEditable}
+            onChange={(e) => updateForm("currentTerm", e.target.value)}
+          />
+        </div>
       </section>
 
       <section>
-        <h3>Course Plan</h3>
+        <div className="heading-row">
+          <h3>Course Plan</h3>
 
+          {isEditable && (
+            <button onClick={addRow}>+ Add Course</button>
+          )}
+        </div>
         {courses.map((course, index) => (
-          <div key={index}>
+          <div key={index} className="plan">
             <select
               value={course.level}
               disabled={!isEditable}
@@ -207,13 +214,12 @@ export default function AdvisingForm() {
             )}
           </div>
         ))}
-
-        {isEditable && (
-          <button onClick={addRow}>+ Add Course</button>
-        )}
       </section>
 
       <section>
+        <button onClick={() => navigate("/dashboard")}>
+          Back to Dashboard
+        </button>
         <button onClick={handleSubmit} disabled={!isEditable}>
           {recordId ? "Update Advising" : "Submit"}
         </button>

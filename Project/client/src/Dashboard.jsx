@@ -232,7 +232,7 @@ export default function Dashboard() {
               Manage Advising
             </button>
           </div>
-        </section>
+        </section>  
       </div>
       <button onClick={handleLogout}>Logout</button>
     </div>
