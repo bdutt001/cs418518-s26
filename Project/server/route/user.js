@@ -13,7 +13,9 @@ const transporter = nodemailer.createTransport({
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS,
   },
-  requireTLS: true,
+  // requireTLS: true,
+  connectionTimeout: 5000,
+  socketTimeout: 5000,
 });
 
 const user = Router();
@@ -253,12 +255,12 @@ user.post("/login", async (req, res) => {
   try {
     const { u_email, u_password } = req.body || {};
 
-    const info = await transporter.sendMail({
-      from: `"Test App" <${process.env.SMTP_USER}>`,
-      to: u_email,
-      subject: "Test Email",
-      html: "<p>Hello</p>",
-    });
+    // const info = await transporter.sendMail({
+    //   from: `"Test App" <${process.env.SMTP_USER}>`,
+    //   to: u_email,
+    //   subject: "Test Email",
+    //   html: "<p>Hello</p>",
+    // });
 
     console.log("SMTP RESPONSE:");
     console.log(info);
