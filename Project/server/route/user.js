@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { connection } from "../database/connection.js";
+import { db } from "../database/connection.js";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
@@ -28,7 +28,7 @@ Nasreen Arif, https://github.com/nasreenarif/cs418518-s26/blob/60fa03240d225b28d
 // =======================
 user.get("/", async (req, res) => {
     try {
-        const [rows] = await connection.execute("SELECT * FROM user_info");
+        const [rows] = await db.execute("SELECT * FROM user_info");
 
         res.status(200).json({
             status: 200,
@@ -56,7 +56,7 @@ user.get("/verify-email", async (req, res) => {
   }
 
   try {
-    const [rows] = await connection.execute(
+    const [rows] = await db.execute(
       "SELECT u_is_verified FROM user_info WHERE u_email = ?",
       [email]
     );
@@ -69,7 +69,7 @@ user.get("/verify-email", async (req, res) => {
       return res.redirect(`${process.env.FE_ORIGIN}/login?verified=true`);
     }
 
-    await connection.execute(
+    await db.execute(
       "UPDATE user_info SET u_is_verified = 1 WHERE u_email = ?",
       [email]
     );
@@ -86,7 +86,7 @@ user.get("/verify-email", async (req, res) => {
 // =======================
 user.get("/:id", async (req, res) => {
     try {
-        const [rows] = await connection.execute(
+        const [rows] = await db.execute(
             "SELECT * FROM user_info WHERE u_id = ?",
             [req.params.id]
         );
@@ -124,7 +124,7 @@ user.post("/", async (req, res) => {
       return res.status(400).json({ status: 400, message: "Missing required fields" });
     }
 
-    const [existing] = await connection.execute("SELECT * FROM user_info WHERE u_email = ?", [u_email]);
+    const [existing] = await db.execute("SELECT * FROM user_info WHERE u_email = ?", [u_email]);
     if (existing.length > 0) {
       return res.status(400).json({ status: 400, message: "Email already in use" });
     }
@@ -132,7 +132,7 @@ user.post("/", async (req, res) => {
     const hashedPassword = await bcrypt.hash(u_password, 10);
     const verificationToken = crypto.randomBytes(32).toString("hex");
 
-    const [result] = await connection.execute(
+    const [result] = await db.execute(
       `INSERT INTO user_info (u_first_name, u_last_name, u_email, u_password, u_is_verified, u_is_admin)
        VALUES (?, ?, ?, ?, ?, ?)`,
       [u_first_name, u_last_name, u_email, hashedPassword, 0, 0]
@@ -182,7 +182,7 @@ user.put("/:id", async (req, res) => {
             });
         }
 
-        const [result] = await connection.execute(
+        const [result] = await db.execute(
             "UPDATE user_info SET u_first_name = ?, u_last_name = ? WHERE u_id = ?",
             [u_first_name, u_last_name, req.params.id]
         );
@@ -216,7 +216,7 @@ user.put("/:id", async (req, res) => {
 // =======================
 user.delete("/:id", async (req, res) => {
     try {
-        const [result] = await connection.execute(
+        const [result] = await db.execute(
             "DELETE FROM user_info WHERE u_id = ?",
             [req.params.id]
         );
@@ -259,7 +259,7 @@ user.post("/login", async (req, res) => {
       });
     }
 
-    const [rows] = await connection.execute(
+    const [rows] = await db.execute(
       "SELECT * FROM user_info WHERE u_email = ? LIMIT 1",
       [u_email]
     );
@@ -348,7 +348,7 @@ user.put("/change-password/:id", async (req, res) => {
       });
     }
 
-    const [rows] = await connection.execute(
+    const [rows] = await db.execute(
       "SELECT u_password FROM user_info WHERE u_id = ?",
       [userId]
     );
@@ -372,7 +372,7 @@ user.put("/change-password/:id", async (req, res) => {
 
     const newHashedPassword = await bcrypt.hash(newPassword, 10);
 
-    await connection.execute(
+    await db.execute(
       "UPDATE user_info SET u_password = ? WHERE u_id = ?",
       [newHashedPassword, userId]
     );
@@ -400,7 +400,7 @@ user.post("/forgot-password", async (req, res) => {
   if (!email) return res.status(400).json({ message: "Email required" });
 
   try {
-    const [rows] = await connection.execute(
+    const [rows] = await db.execute(
       "SELECT u_first_name FROM user_info WHERE u_email = ?",
       [email]
     );
@@ -438,7 +438,7 @@ user.post("/reset-password", async (req, res) => {
     return res.status(400).json({ message: "Email and new password required" });
 
   try {
-    const [rows] = await connection.execute(
+    const [rows] = await db.execute(
       "SELECT u_id FROM user_info WHERE u_email = ?",
       [email]
     );
@@ -449,7 +449,7 @@ user.post("/reset-password", async (req, res) => {
     const userId = rows[0].u_id;
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-    await connection.execute(
+    await db.execute(
       "UPDATE user_info SET u_password = ? WHERE u_id = ?",
       [hashedPassword, userId]
     );

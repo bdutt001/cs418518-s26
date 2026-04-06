@@ -1,5 +1,5 @@
 import express from "express";
-import { connection } from "../database/connection.js";
+import { db } from "../database/connection.js";
 
 const router = express.Router();
 
@@ -10,7 +10,7 @@ router.get("/history/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
 
-    const [rows] = await connection.query(
+    const [rows] = await db.query(
       `SELECT id, created_at, current_term, status
        FROM advising_records
        WHERE user_id = ?
@@ -32,7 +32,7 @@ router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
-    const [[record]] = await connection.query(
+    const [[record]] = await db.query(
       `SELECT * FROM advising_records WHERE id = ?`,
       [id]
     );
@@ -41,7 +41,7 @@ router.get("/:id", async (req, res) => {
       return res.status(404).json({ error: "Record not found" });
     }
 
-    const [courses] = await connection.query(
+    const [courses] = await db.query(
       `SELECT * FROM advising_courses WHERE record_id = ?`,
       [id]
     );
@@ -60,7 +60,7 @@ router.post("/", async (req, res) => {
   try {
     const { userId, lastTerm, lastGpa, currentTerm, courses } = req.body;
 
-    const [result] = await connection.query(
+    const [result] = await db.query(
       `INSERT INTO advising_records 
        (user_id, last_term, last_gpa, current_term) 
        VALUES (?, ?, ?, ?)`,
@@ -70,7 +70,7 @@ router.post("/", async (req, res) => {
     const recordId = result.insertId;
 
     for (let course of courses) {
-      await connection.query(
+      await db.query(
         `INSERT INTO advising_courses 
          (record_id, level, course_name) 
          VALUES (?, ?, ?)`,
@@ -93,7 +93,7 @@ router.put("/:id", async (req, res) => {
     const { id } = req.params;
     const { lastTerm, lastGpa, currentTerm, courses } = req.body;
 
-    const [[record]] = await connection.query(
+    const [[record]] = await db.query(
       `SELECT status FROM advising_records WHERE id = ?`,
       [id]
     );
@@ -106,20 +106,20 @@ router.put("/:id", async (req, res) => {
       return res.status(403).json({ error: "Record is locked" });
     }
 
-    await connection.query(
+    await db.query(
       `UPDATE advising_records
        SET last_term = ?, last_gpa = ?, current_term = ?
        WHERE id = ?`,
       [lastTerm, lastGpa, currentTerm, id]
     );
 
-    await connection.query(
+    await db.query(
       `DELETE FROM advising_courses WHERE record_id = ?`,
       [id]
     );
 
     for (let course of courses) {
-      await connection.query(
+      await db.query(
         `INSERT INTO advising_courses 
          (record_id, level, course_name) 
          VALUES (?, ?, ?)`,
@@ -141,7 +141,7 @@ router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
-    await connection.query(
+    await db.query(
       `DELETE FROM advising_records WHERE id = ?`,
       [id]
     );
