@@ -7,11 +7,6 @@ import advisingRoutes from "./route/advising.js";
 import cors from "cors";
 
 const app = express();
-const port = 3000;
-
-app.listen(port, ()=>{
-    console.log('Server is listening on port ' + port);
-})
 
 const myLogger = function(req,res,next){
     console.log("middleware logged");
@@ -39,7 +34,7 @@ app.use(
         cookie: {
             httpOnly: true,
             secure: true,
-            sameSize: "none",
+            sameSite: "none",
             maxAge: 1000 * 60 * 60
         },
     })
@@ -49,5 +44,11 @@ app.use(
 app.use(myLogger);
 app.use('/user', users);
 app.use("/api/advising", advisingRoutes);
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log(`Server is listening on port ${PORT}`);
+});
 
 export default app;
