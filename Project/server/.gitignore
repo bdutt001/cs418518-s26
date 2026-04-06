@@ -1,2 +1,4 @@
 .env
+.env_local
+.env_deployed
 /node_modules

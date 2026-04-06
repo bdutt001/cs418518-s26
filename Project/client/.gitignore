@@ -1,5 +1,7 @@
 #env
 .env
+.env_local
+.env_deployed
 
 # Logs
 logs
