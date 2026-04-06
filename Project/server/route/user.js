@@ -144,30 +144,30 @@ user.post("/", async (req, res) => {
     //=========================
     // SEND VERIFICATION EMAIL
     //=========================
-        transporter.verify()
-        .then(() => console.log("SMTP ready"))
-        .catch(err => console.error("SMTP error:", err));
+//         transporter.verify()
+//         .then(() => console.log("SMTP ready"))
+//         .catch(err => console.error("SMTP error:", err));
 
-        const verificationUrl = `${process.env.BE_ORIGIN}/user/verify-email?email=${encodeURIComponent(u_email)}`;
+//         const verificationUrl = `${process.env.BE_ORIGIN}/user/verify-email?email=${encodeURIComponent(u_email)}`;
 
-        await transporter.sendMail({
-        from: `"No Reply" <${process.env.SMTP_USER}>`,
-        to: u_email,
-        subject: "Verify your email",
-        html: `<p>Hello ${u_first_name},</p>
-                <p>Click <a href="${verificationUrl}">here</a> to verify your email and activate your account.</p>`,
-        });
+//         await transporter.sendMail({
+//         from: `"No Reply" <${process.env.SMTP_USER}>`,
+//         to: u_email,
+//         subject: "Verify your email",
+//         html: `<p>Hello ${u_first_name},</p>
+//                 <p>Click <a href="${verificationUrl}">here</a> to verify your email and activate your account.</p>`,
+//         });
 
-        res.status(201).json({
-        status: 201,
-        message: "User registered successfully. Please verify your email.",
-        data: { u_id: result.insertId, u_email },
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ status: 500, message: err.message });
-  }
-});
+//         res.status(201).json({
+//         status: 201,
+//         message: "User registered successfully. Please verify your email.",
+//         data: { u_id: result.insertId, u_email },
+//     });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ status: 500, message: err.message });
+//   }
+// });
 
 
 // =======================
