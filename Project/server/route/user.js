@@ -261,9 +261,9 @@ user.post("/login", async (req, res) => {
     //   subject: "Test Email",
     //   html: "<p>Hello</p>",
     // });
-
-    console.log("SMTP RESPONSE:");
-    console.log(info);
+//
+    // console.log("SMTP RESPONSE:");
+    // console.log(info);
 
     if (!u_email || !u_password) {
       return res.status(400).json({
