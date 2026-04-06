@@ -3,6 +3,7 @@ select {
     margin-right: 2rem;
     height: fit-content;
     margin-bottom: 1rem;
+    gap: 1rem;
 }
 
 button {
@@ -21,7 +22,20 @@ button {
 .plan {
     display: flex;
     margin-top: -2rem;
+    gap: 1rem;
 
     align-items: baseline;
     justify-content: center;
+}
+
+input:disabled,
+select:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.plan select,
+.inputs input {
+  flex: 1;
+  min-width: 150px;
 }
