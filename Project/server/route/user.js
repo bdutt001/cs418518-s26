@@ -71,37 +71,6 @@ user.get("/verify-email", async (req, res) => {
   }
 });
 
-// =======================
-// GET USER BY ID
-// =======================
-user.get("/:id", async (req, res) => {
-    try {
-        const [rows] = await db.execute(
-            "SELECT * FROM user_info WHERE u_id = ?",
-            [req.params.id]
-        );
-
-        if (rows.length === 0) {
-            return res.status(404).json({
-                status: 404,
-                message: "User not found",
-                data: null
-            });
-        }
-        res.status(200).json({
-            status: 200,
-            message: "User fetched successfully",
-            data: rows[0]
-        });
-
-    } catch (err) {
-        res.status(500).json({
-            status: 500,
-            message: err.message,
-            data: null
-        });
-    }
-});
 
 // =======================
 // CREATE USER / SIGNUP
@@ -450,6 +419,38 @@ user.post("/reset-password", async (req, res) => {
     console.error("Reset password error:", err);
     return res.status(500).json({ message: "Server error" });
   }
+});
+
+// =======================
+// GET USER BY ID
+// =======================
+user.get("/:id", async (req, res) => {
+    try {
+        const [rows] = await db.execute(
+            "SELECT * FROM user_info WHERE u_id = ?",
+            [req.params.id]
+        );
+
+        if (rows.length === 0) {
+            return res.status(404).json({
+                status: 404,
+                message: "User not found",
+                data: null
+            });
+        }
+        res.status(200).json({
+            status: 200,
+            message: "User fetched successfully",
+            data: rows[0]
+        });
+
+    } catch (err) {
+        res.status(500).json({
+            status: 500,
+            message: err.message,
+            data: null
+        });
+    }
 });
 
 export default user;

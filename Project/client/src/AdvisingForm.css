@@ -19,23 +19,24 @@ button {
     align-items: baseline;
 }
 
-.plan {
-    display: flex;
-    margin-top: -2rem;
-    gap: 1rem;
-
-    align-items: baseline;
-    justify-content: center;
-}
-
 input:disabled,
 select:disabled {
   opacity: 0.7;
   cursor: not-allowed;
 }
 
-.plan select,
-.inputs input {
+.plan {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.plan select {
   flex: 1;
-  min-width: 150px;
+  min-width: 180px;
+}
+
+.plan button {
+  flex-shrink: 0;
 }
