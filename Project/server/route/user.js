@@ -4,8 +4,6 @@ import bcrypt from "bcrypt";
 import crypto from "crypto";
 import { resend } from "../utils/email.js";
 
-const resend = new resend(process.env.RESEND_API_KEY);
-
 const user = Router();
 
 /*
