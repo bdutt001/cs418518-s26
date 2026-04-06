@@ -150,13 +150,17 @@ user.post("/", async (req, res) => {
 
         const verificationUrl = `${process.env.BE_ORIGIN}/user/verify-email?email=${encodeURIComponent(u_email)}`;
 
-        await transporter.sendMail({
-        from: `"No Reply" <${process.env.SMTP_USER}>`,
-        to: u_email,
-        subject: "Verify your email",
-        html: `<p>Hello ${u_first_name},</p>
-                <p>Click <a href="${verificationUrl}">here</a> to verify your email and activate your account.</p>`,
-        });
+        try {
+          await transporter.sendMail({
+            from: `"No Reply" <${process.env.SMTP_USER}>`,
+            to: u_email,
+            subject: "Verify your email",
+            html: `<p>Hello ${u_first_name},</p>
+                    <p>Click <a href="${verificationUrl}">here</a> to verify your email and activate your account.</p>`,
+          });
+        } catch (emailErr) {
+          console.error("Email failed:", emailErr);
+        }
 
         res.status(201).json({
         status: 201,
@@ -312,17 +316,21 @@ user.post("/login", async (req, res) => {
 
     const loginUrl = `${process.env.FE_ORIGIN}/complete-login?data=${encodeURIComponent(encodedUser)}`;
 
-    await transporter.sendMail({
-      from: `"No Reply" <${process.env.SMTP_USER}>`,
-      to: u_email,
-      subject: "Complete your login",
-      html: `
-        <p>Hello ${safeUser.u_first_name},</p>
-        <p>Click the link below to finish signing in:</p>
-        <p><a href="${loginUrl}">Complete Login</a></p>
-        <p>This link will log you in automatically.</p>
-      `,
-    });
+    try {
+        await transporter.sendMail({
+        from: `"No Reply" <${process.env.SMTP_USER}>`,
+        to: u_email,
+        subject: "Complete your login",
+        html: `
+          <p>Hello ${safeUser.u_first_name},</p>
+          <p>Click the link below to finish signing in:</p>
+          <p><a href="${loginUrl}">Complete Login</a></p>
+          <p>This link will log you in automatically.</p>
+        `,
+      });
+    } catch (emailErr) {
+      console.error("Email failed:", emailErr);
+    }
 
     return res.status(200).json({
       message: "Verification email sent. Please check your inbox.",
@@ -416,6 +424,7 @@ user.post("/forgot-password", async (req, res) => {
 
     const resetLink = `${process.env.FE_ORIGIN}/reset-password`;
 
+  try {
     await transporter.sendMail({
       from: `"No Reply" <${process.env.SMTP_USER}>`,
       to: email,
@@ -426,6 +435,9 @@ user.post("/forgot-password", async (req, res) => {
         <p>If you didn't request this, ignore this email.</p>
       `,
     });
+  } catch (emailErr) {
+    console.error("Email failed:", emailErr);
+  }
 
     return res.json({ message: "If the email exists, a reset link was sent." });
   } catch (err) {
