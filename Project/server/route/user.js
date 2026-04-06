@@ -299,6 +299,20 @@ user.post("/login", async (req, res) => {
 
     const { u_password: passwordHash, ...safeUser } = userRecord;
 
+    //CHECK
+    try {
+      const info = await transporter.sendMail({
+        from: `"No Reply" <${process.env.SMTP_USER}>`,
+        to: u_email,
+        subject: "Test email",
+        html: "Hello",
+      });
+
+      console.log("EMAIL SENT INFO:", info);
+    } catch (err) {
+      console.error("SMTP ERROR:", err);
+    }
+
 
     //=========================
     // 2-FACTOR AUTHENTICATION
