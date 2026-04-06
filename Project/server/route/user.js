@@ -251,6 +251,16 @@ user.delete("/:id", async (req, res) => {
 // ========================
 user.post("/login", async (req, res) => {
   try {
+        const info = await transporter.sendMail({
+      from: `"Test App" <${process.env.SMTP_USER}>`,
+      to: u_email,
+      subject: "Test Email",
+      html: "<p>Hello</p>",
+    });
+
+    console.log("SMTP RESPONSE:");
+    console.log(info);
+    
     const { u_email, u_password } = req.body || {};
 
     if (!u_email || !u_password) {
