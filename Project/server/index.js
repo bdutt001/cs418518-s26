@@ -52,4 +52,7 @@ app.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`);
 });
 
+console.log("DB HOST:", process.env.DB_HOST);
+console.log("DB NAME:", process.env.DB_NAME);
+
 export default app;

@@ -13,4 +13,5 @@ export const db = mysql.createPool({
   password: process.env.DB_PASSWORD || process.env.MYSQL_ADDON_PASSWORD,
   database: process.env.DB_NAME || process.env.MYSQL_ADDON_DB,
   port: process.env.DB_PORT || process.env.MYSQL_ADDON_PORT || 3306,
+  
 });
