@@ -144,30 +144,30 @@ user.post("/", async (req, res) => {
     //=========================
     // SEND VERIFICATION EMAIL
     //=========================
-//         transporter.verify()
-//         .then(() => console.log("SMTP ready"))
-//         .catch(err => console.error("SMTP error:", err));
+        transporter.verify()
+        .then(() => console.log("SMTP ready"))
+        .catch(err => console.error("SMTP error:", err));
 
-//         const verificationUrl = `${process.env.BE_ORIGIN}/user/verify-email?email=${encodeURIComponent(u_email)}`;
+        const verificationUrl = `${process.env.BE_ORIGIN}/user/verify-email?email=${encodeURIComponent(u_email)}`;
 
-//         await transporter.sendMail({
-//         from: `"No Reply" <${process.env.SMTP_USER}>`,
-//         to: u_email,
-//         subject: "Verify your email",
-//         html: `<p>Hello ${u_first_name},</p>
-//                 <p>Click <a href="${verificationUrl}">here</a> to verify your email and activate your account.</p>`,
-//         });
+        await transporter.sendMail({
+        from: `"No Reply" <${process.env.SMTP_USER}>`,
+        to: u_email,
+        subject: "Verify your email",
+        html: `<p>Hello ${u_first_name},</p>
+                <p>Click <a href="${verificationUrl}">here</a> to verify your email and activate your account.</p>`,
+        });
 
-//         res.status(201).json({
-//         status: 201,
-//         message: "User registered successfully. Please verify your email.",
-//         data: { u_id: result.insertId, u_email },
-//     });
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ status: 500, message: err.message });
-//   }
-// });
+        res.status(201).json({
+        status: 201,
+        message: "User registered successfully. Please verify your email.",
+        data: { u_id: result.insertId, u_email },
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: 500, message: err.message });
+  }
+});
 
 
 // =======================
@@ -306,27 +306,27 @@ user.post("/login", async (req, res) => {
     //=========================
     // 2-FACTOR AUTHENTICATION
     //=========================
-    const encodedUser = Buffer
-      .from(JSON.stringify(safeUser))
-      .toString("base64");
+    // const encodedUser = Buffer
+    //   .from(JSON.stringify(safeUser))
+    //   .toString("base64");
 
-    const loginUrl = `${process.env.FE_ORIGIN}/complete-login?data=${encodeURIComponent(encodedUser)}`;
+    // const loginUrl = `${process.env.FE_ORIGIN}/complete-login?data=${encodeURIComponent(encodedUser)}`;
 
-    await transporter.sendMail({
-      from: `"No Reply" <${process.env.SMTP_USER}>`,
-      to: u_email,
-      subject: "Complete your login",
-      html: `
-        <p>Hello ${safeUser.u_first_name},</p>
-        <p>Click the link below to finish signing in:</p>
-        <p><a href="${loginUrl}">Complete Login</a></p>
-        <p>This link will log you in automatically.</p>
-      `,
-    });
+    // await transporter.sendMail({
+    //   from: `"No Reply" <${process.env.SMTP_USER}>`,
+    //   to: u_email,
+    //   subject: "Complete your login",
+    //   html: `
+    //     <p>Hello ${safeUser.u_first_name},</p>
+    //     <p>Click the link below to finish signing in:</p>
+    //     <p><a href="${loginUrl}">Complete Login</a></p>
+    //     <p>This link will log you in automatically.</p>
+    //   `,
+    // });
 
-    return res.status(200).json({
-      message: "Verification email sent. Please check your inbox.",
-    });
+    // return res.status(200).json({
+    //   message: "Verification email sent. Please check your inbox.",
+    // });
   } catch (err) {
     return res.status(500).json({
       status: 500,
