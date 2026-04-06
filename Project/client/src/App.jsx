@@ -13,11 +13,13 @@ import AdvisingHistory from "./AdvisingHistory.jsx";
 
 function AppRoutes() {
 
+  const API_URL = import.meta.env.VITE_API_KEY;
+
   const navigate = useNavigate();
 
   async function handleRegister(formData) {
     try {
-      const response = await fetch("http://localhost:3000/user", {
+      const response = await fetch(`${API_URL}/user`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -40,7 +42,7 @@ function AppRoutes() {
 
       console.log("User created with ID:", result.data.insertId);
 
-      const loginResponse = await fetch("http://localhost:3000/user/login", {
+      const loginResponse = await fetch(`${API_URL}/user/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

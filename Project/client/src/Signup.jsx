@@ -46,6 +46,7 @@ export default function Signup({ onRegister }) {
     fetch(`${API_URL}/user`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify({
         u_first_name: form.firstName,
         u_last_name: form.lastName,

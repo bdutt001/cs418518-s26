@@ -9,6 +9,7 @@ Nasreen Arif, https://github.com/nasreenarif/cs418518-s26/blob/60fa03240d225b28d
 */
 
 export default function Dashboard() {
+  const API_URL = import.meta.env.VITE_API_KEY;
   const navigate = useNavigate();
 
   const stored = localStorage.getItem("loggedInUser");
@@ -39,7 +40,7 @@ export default function Dashboard() {
     }
 
     try {
-        const response = await fetch(`http://localhost:3000/user/${user.u_id}`, {
+        const response = await fetch(`${API_URL}/user/${user.u_id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -90,7 +91,7 @@ export default function Dashboard() {
 
     try {
       const res = await fetch(
-        `http://localhost:3000/user/change-password/${user.u_id}`,
+        `${API_URL}/user/change-password/${user.u_id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

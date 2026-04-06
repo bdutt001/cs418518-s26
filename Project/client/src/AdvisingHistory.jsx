@@ -3,13 +3,14 @@ import { useNavigate } from "react-router-dom";
 import "./AdvisingHistory.css";
 
 export default function AdvisingHistory() {
+  const API_URL = import.meta.env.VITE_API_KEY;
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("loggedInUser"));
 
   const [records, setRecords] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/api/advising/history/${user.u_id}`)
+    fetch(`${API_URL}/api/advising/history/${user.u_id}`)
       .then(res => res.json())
       .then(data => setRecords(data));
   }, []);

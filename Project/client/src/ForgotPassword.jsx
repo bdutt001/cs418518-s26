@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./Login.css";
 
 export default function ForgotPassword() {
+  const API_URL = import.meta.env.VITE_API_KEY;
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [message, setMessage] = useState("");
@@ -19,7 +20,7 @@ export default function ForgotPassword() {
 
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:3000/user/forgot-password", {
+      const res = await fetch(`${API_URL}/user/forgot-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email.toLowerCase() }),

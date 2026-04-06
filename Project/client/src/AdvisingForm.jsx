@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "./AdvisingForm.css";
 
-const API = "http://localhost:3000/api/advising";
-const COURSE_API = "http://localhost:3000/courses/taken";
+const API_URL = import.meta.env.VITE_API_KEY;
+const API = `${API_URL}/api/advising`;
+const COURSE_API = `${API_URL}/courses/taken`;
 
 export default function AdvisingForm() {
   const navigate = useNavigate();

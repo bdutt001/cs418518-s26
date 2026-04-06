@@ -9,6 +9,8 @@ Nasreen Arif, https://github.com/nasreenarif/cs418518-s26/blob/60fa03240d225b28d
 */
 
 export default function Login() {
+  const API_URL = import.meta.env.VITE_API_KEY;
+
   const [enteredEmail, setEnteredEmail] = useState("");
   const [enteredPassword, setEnteredPassword] = useState("");
 
@@ -42,7 +44,7 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const res = await fetch(import.meta.env.VITE_API_KEY + "/user/login", {
+      const res = await fetch(`${API_URL}/user/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
