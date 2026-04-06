@@ -147,17 +147,13 @@ user.post("/", async (req, res) => {
 
         const verificationUrl = `${process.env.BE_ORIGIN}/user/verify-email?email=${encodeURIComponent(u_email)}`;
 
-        try {
-          await transporter.sendMail({
+        transporter.sendMail({
             from: `"No Reply" <${process.env.SMTP_USER}>`,
             to: u_email,
             subject: "Verify your email",
             html: `<p>Hello ${u_first_name},</p>
                     <p>Click <a href="${verificationUrl}">here</a> to verify your email and activate your account.</p>`,
-          });
-        } catch (emailErr) {
-          console.error("Email failed:", emailErr);
-        }
+          }).catch (console.error)
 
         res.status(201).json({
         status: 201,
@@ -313,8 +309,7 @@ user.post("/login", async (req, res) => {
 
     const loginUrl = `${process.env.FE_ORIGIN}/complete-login?data=${encodeURIComponent(encodedUser)}`;
 
-    try {
-        await transporter.sendMail({
+    transporter.sendMail({
         from: `"No Reply" <${process.env.SMTP_USER}>`,
         to: u_email,
         subject: "Complete your login",
@@ -324,10 +319,7 @@ user.post("/login", async (req, res) => {
           <p><a href="${loginUrl}">Complete Login</a></p>
           <p>This link will log you in automatically.</p>
         `,
-      });
-    } catch (emailErr) {
-      console.error("Email failed:", emailErr);
-    }
+      }).catch(console.error);
 
     return res.status(200).json({
       message: "Verification email sent. Please check your inbox.",
