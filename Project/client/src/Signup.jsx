@@ -9,6 +9,7 @@ Nasreen Arif, https://github.com/nasreenarif/cs418518-s26/blob/60fa03240d225b28d
 */
 
 export default function Signup({ onRegister }) {
+  const API_URL = import.meta.env.VITE_API_KEY;
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -42,7 +43,7 @@ export default function Signup({ onRegister }) {
     setErrors(v);
 
     if (Object.keys(v).length === 0) {
-    fetch("http://localhost:3000/user", {
+    fetch(`${API_URL}/user`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
