@@ -2,6 +2,9 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
 
+import reCAPTCHA, { ReCAPTCHA } from "react-google-recaptcha";
+
+
 /*
 Login function sourced from course repository.
 
@@ -13,6 +16,10 @@ export default function Login() {
 
   const [enteredEmail, setEnteredEmail] = useState("");
   const [enteredPassword, setEnteredPassword] = useState("");
+
+  const [token, setToken] = useState(null);
+
+  
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -40,10 +47,30 @@ export default function Login() {
       setError("Password must be at least 8 characters.");
       return;
     }
+    if (!token) {
+      setError("Please complete the reCAPTCHA.");
+      return;
+    }
 
     setLoading(true);
 
     try {
+       // Verify reCAPTCHA
+      const captchaRes = await fetch(import.meta.env.VITE_API_KEY + "user/verify-recaptcha", 
+        {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({token}),
+        }
+      );
+
+      const captchaJson = await captchaRes.json().catch(() => ({}));
+
+      if(!captchaRes.ok) {
+        setError(captchaJson?.message || "reCAPTCHA verification failed.");
+        return;
+      }
+     
       const res = await fetch(`${API_URL}/user/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -130,7 +157,9 @@ export default function Login() {
             }}>
             Create a new account
           </Link>
-
+          
+          <ReCAPTCHA sitekey={import.meta.env.VITE_SITE_KEY}
+          onChange={(value) => setToken(value)}/>
           <button className="button" type="submit" disabled={loading}>
             {loading ? "Signing in..." : "Log In"}
           </button>

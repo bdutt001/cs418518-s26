@@ -453,4 +453,28 @@ user.get("/:id", async (req, res) => {
     }
 });
 
+user.post("/verify-recaptcha", async (req, res) => {
+  const token = req.body.token;
+  if (!token) {
+    return res
+    .status(400)
+    .json({ success: false, message: "No token provided" });
+  }
+  console.log("Token:", token);
+  const secret = process.env.RECAPTCHA_SECRET;
+  const verifyURL = "https://www.google.com/recaptcha/api/siteverify";
+  const params = new URLSearchParams({ secret, response: token });
+
+  try {
+    const googleRes = await fetch(verifyURL, { method: "POST", body: params });
+    const data = await googleRes.json();
+    console.log("Google status:", googleRes.status);
+    console.log("Google response:", data);
+    res.json(data);
+  } catch (err) {
+    console.error("Error verifying reCAPTCHA:", err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 export default user;
