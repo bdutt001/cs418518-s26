@@ -11,6 +11,12 @@ export default function AdvisingForm() {
   const { id } = useParams();
   const user = JSON.parse(localStorage.getItem("loggedInUser"));
 
+
+  const isAdmin = user?.u_is_admin;
+
+  const [adminDecision, setAdminDecision] = useState("Pending");
+  const [feedback, setFeedback] = useState("");
+
   const [recordId, setRecordId] = useState(null);
   const [status, setStatus] = useState("Pending");
   const [isEditable, setIsEditable] = useState(true);
@@ -38,6 +44,8 @@ export default function AdvisingForm() {
       .then(data => {
         setRecordId(data.record.id);
         setStatus(data.record.status);
+
+        setAdminDecision(data.record.status || "Pending");
 
         setForm({
           lastTerm: data.record.last_term || "",
@@ -76,6 +84,38 @@ export default function AdvisingForm() {
   function addRow() {
     if (!isEditable) return;
     setCourses(prev => [...prev, { level: "", course_name: "" }]);
+  }
+
+  async function handleAdminSubmit() {
+    if (!feedback.trim()) {
+      alert("Please provide feedback before submitting");
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API}/${recordId}/status`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          status: adminDecision,
+          feedback
+        })
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        alert(data.error || "Failed to update status");
+        return;
+      }
+
+      alert("Decision submitted");
+
+      navigate("/advising-history");
+    } catch (err) {
+      console.error(err);
+      alert("Server error");
+    }
   }
 
   function updateCourse(index, field, value) {
@@ -222,13 +262,39 @@ export default function AdvisingForm() {
           Back to Dashboard
         </button>
         <button onClick={handleSubmit} disabled={!isEditable}>
-          {recordId ? "Update Advising" : "Submit"}
+          {recordId ? "Update" : "Submit"}
         </button>
 
         {!isEditable && (
           <p>This record is locked (Approved/Rejected)</p>
         )}
       </section>
+
+      {isAdmin && (
+        <section style={{ marginTop: 30 }}>
+          <h3>Admin Review</h3>
+
+          <select
+            value={adminDecision}
+            onChange={(e) => setAdminDecision(e.target.value)}
+          >
+            <option value="Pending">Pending</option>
+            <option value="Approved">Approved</option>
+            <option value="Rejected">Rejected</option>
+          </select>
+
+          <textarea
+            placeholder="Enter feedback for student..."
+            value={feedback}
+            onChange={(e) => setFeedback(e.target.value)}
+            style={{ width: "100%", height: 120, marginTop: 10 }}
+          />
+
+          <button onClick={handleAdminSubmit}>
+            Submit Decision
+          </button>
+        </section>
+      )}
     </div>
   );
 }

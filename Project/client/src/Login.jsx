@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
 
-import reCAPTCHA, { ReCAPTCHA } from "react-google-recaptcha";
+import ReCAPTCHA from "react-google-recaptcha";
 
 
 /*
@@ -56,7 +56,7 @@ export default function Login() {
 
     try {
        // Verify reCAPTCHA
-      const captchaRes = await fetch(import.meta.env.VITE_API_KEY + "user/verify-recaptcha", 
+      const captchaRes = await fetch(import.meta.env.VITE_API_KEY + "/user/verify-recaptcha", 
         {
           method: "POST",
           headers: {"Content-Type": "application/json"},

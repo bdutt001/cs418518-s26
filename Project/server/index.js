@@ -6,7 +6,18 @@ import users from "./route/user.js"
 import advisingRoutes from "./route/advising.js";
 import cors from "cors";
 
+import helmet from "helmet";
+
 const app = express();
+
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      frameAncestors: ["'self'"],
+    },
+  },
+}));
 
 const myLogger = function(req,res,next){
     console.log("middleware logged");
@@ -48,9 +59,11 @@ app.use("/api/advising", advisingRoutes);
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-    console.log(`Server is listening on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== "test") {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}
 
 console.log("DB HOST:", process.env.DB_HOST);
 console.log("DB NAME:", process.env.DB_NAME);

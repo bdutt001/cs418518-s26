@@ -6,6 +6,11 @@ import { resend } from "../utils/email.js";
 
 const user = Router();
 
+function isStrongPassword(password) {
+  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
+  return regex.test(password);
+}
+
 /*
 USER APIs sourced from course repository.
 
@@ -86,6 +91,13 @@ user.post("/", async (req, res) => {
     const [existing] = await db.execute("SELECT * FROM user_info WHERE u_email = ?", [u_email]);
     if (existing.length > 0) {
       return res.status(400).json({ status: 400, message: "Email already in use" });
+    }
+
+    if (!isStrongPassword(u_password)) {
+      return res.status(400).json({
+        status: 400,
+        message: "Password is too weak",
+      });
     }
 
     const hashedPassword = await bcrypt.hash(u_password, 10);
@@ -370,8 +382,8 @@ user.post("/forgot-password", async (req, res) => {
     const resetLink = `${process.env.FE_ORIGIN}/reset-password`;
 
   try {
-    await transporter.sendMail({
-      from: `"No Reply" <${process.env.SMTP_USER}>`,
+    await resend.emails.send({
+      from: process.env.EMAIL_FROM,
       to: email,
       subject: "Reset Your Password",
       html: `

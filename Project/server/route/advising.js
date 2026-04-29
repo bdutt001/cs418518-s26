@@ -3,6 +3,13 @@ import { db } from "../database/connection.js";
 
 const router = express.Router();
 
+// function requireAdmin(req, res, next) {
+//   if (req.user?.role !== "admin") {
+//     return res.status(403).json({ error: "Admins only" });
+//   }
+//   next();
+// }
+
 // ===============================
 // HELPER: get previously taken courses
 // ===============================
@@ -43,8 +50,35 @@ function filterCourses(takenSet, courses) {
   return { allowed, rejected };
 }
 
+router.get("/admin/history", async (req, res) => {
+  try {
+    const [rows] = await db.query(`
+      SELECT 
+        ar.id,
+        ar.user_id,
+        ar.created_at,
+        ar.current_term,
+        ar.status,
+        u.u_first_name,
+        u.u_last_name
+      FROM advising_records ar
+      JOIN user_info u ON ar.user_id = u.u_id
+      ORDER BY ar.created_at DESC
+    `);
+    // const [rows] = await db.query(`
+    //   SELECT * FROM advising_records
+    // `);
+
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    return res.json([]);;
+  }
+});
+
+
 // ===============================
-// GET: Advising History
+// GET: Advising History for Student User
 // ===============================
 router.get("/history/:userId", async (req, res) => {
   try {
@@ -265,7 +299,6 @@ router.put("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-2
     await db.query(`DELETE FROM advising_courses WHERE record_id = ?`, [id]);
     await db.query(`DELETE FROM advising_records WHERE id = ?`, [id]);
 
@@ -301,6 +334,29 @@ router.get("/:id", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to fetch record" });
+  }
+});
+
+
+router.put("/:id/status", async (req, res) => {
+  try {
+    const { status, feedback } = req.body;
+
+    if (!["Approved", "Rejected", "Pending"].includes(status)) {
+      return res.status(400).json({ error: "Invalid status" });
+    }
+
+    await db.query(
+      `UPDATE advising_records 
+       SET status = ?, admin_feedback = ?
+       WHERE id = ?`,
+      [status, feedback, req.params.id]
+    );
+
+    res.json({ message: "Status updated" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to update status" });
   }
 });
 

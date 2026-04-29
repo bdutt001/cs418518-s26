@@ -135,6 +135,9 @@ export default function Dashboard() {
       {user.u_is_admin ? (
         <div>
           <h3>Admin Dashboard</h3>
+          <button onClick={() => navigate("/advising-history")}>
+              View Course Plans
+            </button>
         </div>
       ) : (
           <div>

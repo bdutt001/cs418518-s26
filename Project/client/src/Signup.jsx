@@ -13,11 +13,13 @@ export default function Signup({ onRegister }) {
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
-    //uin: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
+
+  const passwordRegex =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
 
   const [errors, setErrors] = useState({});
 
@@ -29,9 +31,11 @@ export default function Signup({ onRegister }) {
     const e = {};
     if (!form.firstName.trim()) e.firstName = "First name is required";
     if (!form.lastName.trim()) e.lastName = "Last name is required";
-    //if (!/^\d{8}$/.test(form.uin)) e.uin = "UIN must be 8 digits";
     if (!form.email.includes("@")) e.email = "Valid email required";
-    if (form.password.length < 6) e.password = "Minimum 6 characters";
+    if (!passwordRegex.test(form.password)) {
+      e.password =
+        "Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.";
+    }
     if (form.password !== form.confirmPassword)
       e.confirmPassword = "Passwords do not match";
     return e;
